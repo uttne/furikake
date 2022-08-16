@@ -4,6 +4,7 @@
     "description": "An assortment set of useful tools for data creation.",
     "version": "0.0.1",
     "publisher": "uttne",
+    "icon": "./images/icon.ico",
     "license": "SEE LICENSE IN LICENSE FILE",
     "engines": {
         "vscode": "^1.0.0"
