@@ -1,7 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { SampleProvider } from "./providers/SampleProvider";
 import { ReplaceUUIDProvider } from "./providers/ReplaceUUIDProvider";
 import { ChangeTimezoneProvider } from "./providers/ChangeTimezoneProvider";
 
@@ -60,19 +59,6 @@ export function activate(context: vscode.ExtensionContext) {
             )
         );
     }
-    {
-        const provider = new SampleProvider(context.extensionUri);
-        context.subscriptions.push(
-            vscode.window.registerWebviewViewProvider(
-                SampleProvider.viewType,
-                provider
-            )
-        );
-        context.subscriptions.push(
-            vscode.commands.registerCommand(
-                "test-data-util-extensions.sample",
-                () => {
-                    vscode.window.showInformationMessage("Sample");
                 }
             )
         );

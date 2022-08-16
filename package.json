@@ -12,10 +12,8 @@
     "activationEvents": [
         "onView:test-data-util-extensions.replaceUUIDView",
         "onView:test-data-util-extensions.changeTimezoneView",
-        "onView:test-data-util-extensions.sampleView",
         "onCommand:test-data-util-extensions.replaceUUID",
-        "onCommand:test-data-util-extensions.changeTimeZone",
-        "onCommand:test-data-util-extensions.sample"
+        "onCommand:test-data-util-extensions.changeTimeZone"
     ],
     "main": "./out/extension.js",
     "contributes": {
@@ -39,11 +37,6 @@
                     "type": "webview",
                     "id": "test-data-util-extensions.changeTimezoneView",
                     "name": "Change Timezone"
-                },
-                {
-                    "type": "webview",
-                    "id": "test-data-util-extensions.sampleView",
-                    "name": "Sample"
                 }
             ]
         },
@@ -55,21 +48,9 @@
             {
                 "command": "test-data-util-extensions.changeTimeZone",
                 "title": "Change Timezone"
-            },
-            {
-                "command": "test-data-util-extensions.sample",
-                "title": "Test Util Sample"
             }
         ],
-        "menus": {
-            "view/title": [
-                {
-                    "command": "test-data-util-extensions.sample",
-                    "group": "navigation",
-                    "when": "view == test-data-util-extensions.replaceUUIDView"
-                }
-            ]
-        }
+        "menus": {}
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",
