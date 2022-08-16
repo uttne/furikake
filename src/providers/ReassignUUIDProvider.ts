@@ -2,9 +2,8 @@ import * as vscode from "vscode";
 import { getNonce } from "../utils/utils";
 import { v4 } from "uuid";
 
-export class ReplaceUUIDProvider implements vscode.WebviewViewProvider {
-    public static readonly viewType =
-        "test-data-util-extensions.replaceUUIDView";
+export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
+    public static readonly viewType = "furikake.reassignUUIDView";
 
     constructor(private readonly _extensionUri: vscode.Uri) {}
 
@@ -15,7 +14,7 @@ export class ReplaceUUIDProvider implements vscode.WebviewViewProvider {
     ): void | Thenable<void> {
         const webview = webviewView.webview;
 
-        const personalDir = "media/replaceUUID";
+        const personalDir = "media/reassignUUID";
         webviewView.webview.options = {
             enableScripts: true,
         };
@@ -41,22 +40,22 @@ export class ReplaceUUIDProvider implements vscode.WebviewViewProvider {
             <link href="${styleVSCodeUri}" rel="stylesheet">
         </head>
         <body>
-            <button id="replace-button">replace</button>
+            <button id="reassign-button">reassign</button>
             <script nonce="${nonce}" src="${scriptUri}"></script>
         </body>
         </html>`;
 
         webviewView.webview.onDidReceiveMessage((data) => {
             switch (data.cmd) {
-                case "replace": {
+                case "reassign": {
                     try {
-                        this.replace();
+                        this.reassign();
                         vscode.window.showInformationMessage(
-                            "Success: replace UUID"
+                            "Success: reassign UUID"
                         );
                     } catch {
                         vscode.window.showInformationMessage(
-                            "Failed: replace UUID"
+                            "Failed: reassign UUID"
                         );
                     }
 
@@ -66,7 +65,7 @@ export class ReplaceUUIDProvider implements vscode.WebviewViewProvider {
         });
     }
 
-    replace() {
+    reassign() {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
 

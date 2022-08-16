@@ -1,53 +1,55 @@
 {
-    "name": "test-data-util-extensions",
-    "displayName": "test-data-util-extensions",
-    "description": "",
+    "name": "furikake",
+    "displayName": "Furikake",
+    "description": "An assortment set of useful tools for data creation.",
     "version": "0.0.1",
+    "publisher": "uttne",
+    "license": "SEE LICENSE IN LICENSE FILE",
     "engines": {
-        "vscode": "^1.70.0"
+        "vscode": "^1.0.0"
     },
     "categories": [
         "Other"
     ],
     "activationEvents": [
-        "onView:test-data-util-extensions.replaceUUIDView",
-        "onView:test-data-util-extensions.changeTimezoneView",
-        "onCommand:test-data-util-extensions.replaceUUID",
-        "onCommand:test-data-util-extensions.changeTimeZone"
+        "onView:furikake.reassignUUIDView",
+        "onView:furikake.changeTimezoneView",
+        "onCommand:furikake.reassignUUID",
+        "onCommand:furikake.changeTimeZone"
     ],
     "main": "./out/extension.js",
     "contributes": {
         "viewsContainers": {
             "activitybar": [
                 {
-                    "id": "test-data-util-extensions-launcher",
-                    "title": "Test data util",
+                    "id": "furikake-launcher",
+                    "title": "Furikake",
                     "icon": "media/icon.svg"
                 }
             ]
         },
         "views": {
-            "test-data-util-extensions-launcher": [
+            "furikake-launcher": [
                 {
                     "type": "webview",
-                    "id": "test-data-util-extensions.replaceUUIDView",
-                    "name": "Replace UUID"
+                    "id": "furikake.reassignUUIDView",
+                    "name": "Reassign UUID"
                 },
                 {
                     "type": "webview",
-                    "id": "test-data-util-extensions.changeTimezoneView",
+                    "id": "furikake.changeTimezoneView",
                     "name": "Change Timezone"
                 }
             ]
         },
         "commands": [
             {
-                "command": "test-data-util-extensions.replaceUUID",
-                "title": "Replace UUID"
+                "command": "furikake.reassignUUID",
+                "title": "Furikake: Reassign UUID"
             },
             {
-                "command": "test-data-util-extensions.changeTimeZone",
-                "title": "Change Timezone"
+                "command": "furikake.changeTimeZone",
+                "title": "Furikake: Change Timezone"
             }
         ],
         "menus": {}

@@ -8,8 +8,7 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 export class ChangeTimezoneProvider implements vscode.WebviewViewProvider {
-    public static readonly viewType =
-        "test-data-util-extensions.changeTimezoneView";
+    public static readonly viewType = "furikake.changeTimezoneView";
 
     constructor(private readonly _extensionUri: vscode.Uri) {}
 
@@ -47,8 +46,8 @@ export class ChangeTimezoneProvider implements vscode.WebviewViewProvider {
         </head>
         <body>
             <input id="timezone-value" type="number" name="number" value="0">
-            <button id="change-button">change</button>
             <label><input id="not-use-z-checkbox" type="checkbox" name="not-use-z">not use Z</label>
+            <button id="change-button">change</button>
             <script nonce="${nonce}" src="${scriptUri}"></script>
         </body>
         </html>`;
@@ -57,7 +56,7 @@ export class ChangeTimezoneProvider implements vscode.WebviewViewProvider {
             switch (data.cmd) {
                 case "change_timezone_all": {
                     try {
-                        this.replace(data.value.tz, {
+                        this.change(data.value.tz, {
                             notUseZ: data.value.notUseZ,
                         });
                         vscode.window.showInformationMessage(
@@ -74,7 +73,7 @@ export class ChangeTimezoneProvider implements vscode.WebviewViewProvider {
         });
     }
 
-    replace(tz: number, options?: { notUseZ?: boolean }) {
+    change(tz: number, options?: { notUseZ?: boolean }) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
 

@@ -1,34 +1,31 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from "vscode";
-import { ReplaceUUIDProvider } from "./providers/ReplaceUUIDProvider";
+import { ReassignUUIDProvider } from "./providers/ReassignUUIDProvider";
 import { ChangeTimezoneProvider } from "./providers/ChangeTimezoneProvider";
 
 export function activate(context: vscode.ExtensionContext) {
     {
-        const provider = new ReplaceUUIDProvider(context.extensionUri);
+        const provider = new ReassignUUIDProvider(context.extensionUri);
         context.subscriptions.push(
             vscode.window.registerWebviewViewProvider(
-                ReplaceUUIDProvider.viewType,
+                ReassignUUIDProvider.viewType,
                 provider
             )
         );
         context.subscriptions.push(
-            vscode.commands.registerCommand(
-                "test-data-util-extensions.replaceUUID",
-                () => {
-                    try {
-                        provider.replace();
-                        vscode.window.showInformationMessage(
-                            "Success: replace UUID"
-                        );
-                    } catch {
-                        vscode.window.showInformationMessage(
-                            "Failed: replace UUID"
-                        );
-                    }
+            vscode.commands.registerCommand("furikake.reassignUUID", () => {
+                try {
+                    provider.reassign();
+                    vscode.window.showInformationMessage(
+                        "Success: reassign UUID"
+                    );
+                } catch {
+                    vscode.window.showInformationMessage(
+                        "Failed: reassign UUID"
+                    );
                 }
-            )
+            })
         );
     }
     {
@@ -42,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
 
         context.subscriptions.push(
             vscode.commands.registerCommand(
-                "test-data-util-extensions.changeTimeZone",
+                "furikake.changeTimeZone",
                 async () => {
                     const opt: vscode.InputBoxOptions = {
                         validateInput: (text) => {
@@ -65,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
                                 return;
                             }
                             const tz = Number(value);
-                            provider.replace(tz);
+                            provider.change(tz);
                             vscode.window.showInformationMessage(
                                 "Success: change timezone"
                             );
