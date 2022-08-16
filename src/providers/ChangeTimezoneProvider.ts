@@ -56,9 +56,18 @@ export class ChangeTimezoneProvider implements vscode.WebviewViewProvider {
         webviewView.webview.onDidReceiveMessage((data) => {
             switch (data.cmd) {
                 case "change_timezone_all": {
-                    this.replace(data.value.tz, {
-                        notUseZ: data.value.notUseZ,
-                    });
+                    try {
+                        this.replace(data.value.tz, {
+                            notUseZ: data.value.notUseZ,
+                        });
+                        vscode.window.showInformationMessage(
+                            "Success: change timezone"
+                        );
+                    } catch {
+                        vscode.window.showInformationMessage(
+                            "Failed: change timezone"
+                        );
+                    }
                     break;
                 }
             }

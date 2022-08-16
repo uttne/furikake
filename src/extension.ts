@@ -17,7 +17,16 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.commands.registerCommand(
                 "test-data-util-extensions.replaceUUID",
                 () => {
-                    provider.replace();
+                    try {
+                        provider.replace();
+                        vscode.window.showInformationMessage(
+                            "Success: replace UUID"
+                        );
+                    } catch {
+                        vscode.window.showInformationMessage(
+                            "Failed: replace UUID"
+                        );
+                    }
                 }
             )
         );
@@ -34,7 +43,7 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(
             vscode.commands.registerCommand(
                 "test-data-util-extensions.changeTimeZone",
-                () => {
+                async () => {
                     const opt: vscode.InputBoxOptions = {
                         validateInput: (text) => {
                             if (text === "") {
@@ -50,15 +59,22 @@ export function activate(context: vscode.ExtensionContext) {
                     };
                     const input = vscode.window.showInputBox(opt);
 
-                    input.then((value) => {
-                        const tz = Number(value);
-                        provider.replace(tz);
-                    });
-                    provider.replace(0);
-                }
-            )
-        );
-    }
+                    try {
+                        await input.then((value) => {
+                            if (value === undefined) {
+                                return;
+                            }
+                            const tz = Number(value);
+                            provider.replace(tz);
+                            vscode.window.showInformationMessage(
+                                "Success: change timezone"
+                            );
+                        });
+                    } catch {
+                        vscode.window.showInformationMessage(
+                            "Failed: change timezone"
+                        );
+                    }
                 }
             )
         );

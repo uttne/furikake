@@ -49,8 +49,17 @@ export class ReplaceUUIDProvider implements vscode.WebviewViewProvider {
         webviewView.webview.onDidReceiveMessage((data) => {
             switch (data.cmd) {
                 case "replace": {
-                    vscode.window.showInformationMessage("replace UUID");
-                    this.replace();
+                    try {
+                        this.replace();
+                        vscode.window.showInformationMessage(
+                            "Success: replace UUID"
+                        );
+                    } catch {
+                        vscode.window.showInformationMessage(
+                            "Failed: replace UUID"
+                        );
+                    }
+
                     break;
                 }
             }
