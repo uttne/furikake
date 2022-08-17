@@ -4,10 +4,14 @@
     "description": "It is an assortment of tools useful for data creation.",
     "version": "0.0.1",
     "publisher": "uttne",
-    "icon": "./images/icon.ico",
-    "license": "SEE LICENSE IN LICENSE FILE",
+    "icon": "images/icon.ico",
+    "license": "SEE LICENSE IN LICENSE",
     "engines": {
-        "vscode": "^1.0.0"
+        "vscode": "^1.70.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/uttne/furikake.git"
     },
     "categories": [
         "Other"
