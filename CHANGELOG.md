@@ -6,4 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+- Support upper case for UUID reassignment.
+
+## [0.0.1] - 2022-08-17
+
 - Initial release
