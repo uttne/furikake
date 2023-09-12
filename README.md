@@ -8,13 +8,13 @@ This extension is a collection of useful tools when creating data such as test d
 
 ### Reassign UUID
 
-Reassigns the UUID entered in the editor.
+Detects UUIDs within the text editor and automatically reassigns them with a new UUID.
 
 ![reassign-UUID.gif](./images/reassign-UUID.gif)
 
 ### Change Timezone
 
-Changes the time zone of the date and time (ISO8601 extended format) entered in the editor.
+Identifies ISO 8601 formatted dates within th text editor and allows users to adjust their timezones.
 
 ![change-timezone.gif](./images/change-timezone.gif)
 
