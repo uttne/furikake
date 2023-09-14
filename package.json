@@ -57,7 +57,18 @@
                 "title": "Furikake: Change Timezone"
             }
         ],
-        "menus": {}
+        "menus": {},
+        "colors": [
+            {
+                "id": "furikake.uuidBackgroundColor",
+                "description": "Background decoration color for UUID",
+                "defaults": {
+                    "dark": "#FF000055",
+                    "light": "#FF000055",
+                    "highContrast": "#FF000055"
+                }
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "yarn run compile",

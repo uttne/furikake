@@ -5,6 +5,14 @@ import { v4 } from "uuid";
 export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = "furikake.reassignUUIDView";
 
+    private timeout: NodeJS.Timer | undefined = undefined;
+    readonly uuidRegPattern: string =
+        /[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}/
+            .source;
+
+    readonly decorationType = vscode.window.createTextEditorDecorationType({
+        backgroundColor: { id: "furikake.uuidBackgroundColor" },
+    });
     constructor(private readonly _extensionUri: vscode.Uri) {}
 
     resolveWebviewView(
@@ -73,8 +81,7 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
 
         const lines = text.split("\n");
 
-        const re =
-            /[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}/;
+        const re = new RegExp(this.uuidRegPattern);
 
         const targetList: vscode.Range[] = [];
         lines.forEach((line, lineIndex) => {
@@ -104,5 +111,44 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
                 editBuilder.replace(range, v4());
             });
         });
+    }
+
+    updateDecorations() {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return;
+
+        const reg = new RegExp(this.uuidRegPattern, "g");
+        const text = editor.document.getText();
+        const decorationOptionsList: vscode.DecorationOptions[] = [];
+
+        let match: RegExpExecArray | null = null;
+        while ((match = reg.exec(text))) {
+            const startPos = editor.document.positionAt(match.index);
+            const endPos = editor.document.positionAt(
+                match.index + match[0].length
+            );
+            const decoration = { range: new vscode.Range(startPos, endPos) };
+            decorationOptionsList.push(decoration);
+        }
+        editor.setDecorations(this.decorationType, decorationOptionsList);
+    }
+
+    triggerUpdateDecorations(
+        eventDocument: vscode.TextDocument,
+        runNow: boolean = false
+    ): void {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) return;
+        if (editor.document !== eventDocument) return;
+
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+            this.timeout = undefined;
+        }
+        if (runNow) {
+            this.updateDecorations();
+        } else {
+            this.timeout = setTimeout(this.updateDecorations.bind(this), 500);
+        }
     }
 }

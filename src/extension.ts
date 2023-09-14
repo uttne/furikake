@@ -5,6 +5,11 @@ import { ReassignUUIDProvider } from "./providers/ReassignUUIDProvider";
 import { ChangeTimezoneProvider } from "./providers/ChangeTimezoneProvider";
 
 export function activate(context: vscode.ExtensionContext) {
+    console.log("run activate");
+    const triggerUpdateDecorationsDelegates: ((
+        eventDocument: vscode.TextDocument,
+        runNow?: boolean
+    ) => void)[] = [];
     {
         const provider = new ReassignUUIDProvider(context.extensionUri);
         context.subscriptions.push(
@@ -26,6 +31,10 @@ export function activate(context: vscode.ExtensionContext) {
                     );
                 }
             })
+        );
+
+        triggerUpdateDecorationsDelegates.push(
+            provider.triggerUpdateDecorations.bind(provider)
         );
     }
     {
@@ -74,6 +83,37 @@ export function activate(context: vscode.ExtensionContext) {
                     }
                 }
             )
+        );
+    }
+    {
+        {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) {
+                triggerUpdateDecorationsDelegates.forEach((f) =>
+                    f(editor.document, true)
+                );
+            }
+        }
+        vscode.window.onDidChangeActiveTextEditor(
+            (editor) => {
+                if (!editor) return;
+
+                triggerUpdateDecorationsDelegates.forEach((f) =>
+                    f(editor.document, true)
+                );
+            },
+            null,
+            context.subscriptions
+        );
+
+        vscode.workspace.onDidChangeTextDocument(
+            (event) => {
+                triggerUpdateDecorationsDelegates.forEach((f) =>
+                    f(event.document)
+                );
+            },
+            null,
+            context.subscriptions
         );
     }
 }
