@@ -13,6 +13,11 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
     readonly decorationType = vscode.window.createTextEditorDecorationType({
         backgroundColor: { id: "furikake.uuidBackgroundColor" },
     });
+
+    public hiddenUuidDecoration: boolean = false;
+
+    private isVisible: () => boolean = () => false;
+
     constructor(private readonly _extensionUri: vscode.Uri) {}
 
     resolveWebviewView(
@@ -75,6 +80,14 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
                 }
             }
         });
+
+        this.isVisible = () => webviewView.visible;
+
+        webviewView.onDidChangeVisibility((e) => {
+            const editor = vscode.window.activeTextEditor;
+            if (!editor) return;
+            this.triggerUpdateDecorations(editor.document, true);
+        });
     }
 
     reassign(options?: { uuidUpperCaseChecked?: boolean }) {
@@ -128,15 +141,20 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
         const text = editor.document.getText();
         const decorationOptionsList: vscode.DecorationOptions[] = [];
 
-        let match: RegExpExecArray | null = null;
-        while ((match = reg.exec(text))) {
-            const startPos = editor.document.positionAt(match.index);
-            const endPos = editor.document.positionAt(
-                match.index + match[0].length
-            );
-            const decoration = { range: new vscode.Range(startPos, endPos) };
-            decorationOptionsList.push(decoration);
+        if (this.isVisible()) {
+            let match: RegExpExecArray | null = null;
+            while ((match = reg.exec(text))) {
+                const startPos = editor.document.positionAt(match.index);
+                const endPos = editor.document.positionAt(
+                    match.index + match[0].length
+                );
+                const decoration = {
+                    range: new vscode.Range(startPos, endPos),
+                };
+                decorationOptionsList.push(decoration);
+            }
         }
+
         editor.setDecorations(this.decorationType, decorationOptionsList);
     }
 
