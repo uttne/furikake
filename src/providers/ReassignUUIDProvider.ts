@@ -48,6 +48,7 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
             <link href="${styleVSCodeUri}" rel="stylesheet">
         </head>
         <body>
+            <label><input id="furikake-uuid-upper-case-checkbox" type="checkbox" name="furikake-uuid-upper-case">UUID Upper Case</label>
             <button id="reassign-button">reassign</button>
             <script nonce="${nonce}" src="${scriptUri}"></script>
         </body>
@@ -57,7 +58,10 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
             switch (data.cmd) {
                 case "reassign": {
                     try {
-                        this.reassign();
+                        this.reassign({
+                            uuidUpperCaseChecked:
+                                data.value.uuidUpperCaseChecked,
+                        });
                         vscode.window.showInformationMessage(
                             "Success: reassign UUID"
                         );
@@ -73,7 +77,7 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
         });
     }
 
-    reassign() {
+    reassign(options?: { uuidUpperCaseChecked?: boolean }) {
         const editor = vscode.window.activeTextEditor;
         if (!editor) return;
 
@@ -108,7 +112,10 @@ export class ReassignUUIDProvider implements vscode.WebviewViewProvider {
 
         editor.edit((editBuilder) => {
             targetList.forEach((range) => {
-                editBuilder.replace(range, v4());
+                const uuid = options?.uuidUpperCaseChecked
+                    ? v4().toUpperCase()
+                    : v4();
+                editBuilder.replace(range, uuid);
             });
         });
     }
